@@ -15,6 +15,11 @@ const tweets = [
 ];
 
 server.post("/sign-up", (req, res) => {
+    const {username, avatar} = req.body;
+    if (username === "" || avatar === ""){
+        res.status(400).send("Todos os campos são obrigatórios");
+        return
+    }
     usuarios.push(req.body);
     res.send("OK");
 });
@@ -34,5 +39,10 @@ server.post("/tweets", (req, res) => {
     })
     res.send("OK");
 });
+server.get("/tweets/:USERNAME", (req, res) => {
+    const user = req.params.USERNAME;
+    const list = tweets.filter(tweet => tweet.username === user ? true : false);
+    res.send(list);
+})
 
 server.listen(5000);
